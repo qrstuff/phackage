@@ -9,6 +9,7 @@ on:
   push:
     branches:
       - 7.x
+      - 8.x
 
 env:
   # Use docker.io for Docker Hub if empty
