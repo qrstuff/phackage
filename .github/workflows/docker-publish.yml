@@ -63,7 +63,6 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=ref,event=branch
             type=raw,value=7.x
 
       - name: Extract Docker metadata
@@ -72,7 +71,6 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=ref,event=branch
             type=raw,value=7.x-fpm
 
       # Build and push Docker image with Buildx (don't push on PR)
