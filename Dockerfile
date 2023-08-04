@@ -1,4 +1,6 @@
-FROM php:${BASE_IMAGE_TAG}
+ARG baseImageTag=latest
+
+FROM php:${baseImageTag}
 
 # install php-curl
 RUN apt-get update && \
