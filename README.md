@@ -1,6 +1,6 @@
 # phackage
 
-Batteries included [Docker](https://www.docker.com/) image for latest [PHP](https://www.php.net/) 7 & 8 with all extensions, [Composer](https://getcomposer.org/), [Node.js](https://nodejs.org/en), [Yarn](https://yarnpkg.com/) installed and enabled.
+Batteries included [Docker](https://www.docker.com/) image for latest [PHP](https://www.php.net/) 7 & 8 versions + all extensions installed and enabled, [Composer](https://getcomposer.org/), [Node.js](https://nodejs.org/en), [Yarn](https://yarnpkg.com/).
 
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/qrstuff/phackage/docker-publish.yml?branch=main)
 
