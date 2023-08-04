@@ -1,19 +1,4 @@
-FROM php:7.4
-
-# install basic utilities
-RUN apt-get update && \
-    apt-get install -y curl git nano vim wget zip
-
-# install mysql client
-RUN apt-get update && \
-    apt-get install -y default-mysql-client
-
-# install Node.js and npm
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
-    apt-get install -y nodejs
-
-# install Yarn package manager
-RUN npm i -g yarn
+FROM php:${BASE_IMAGE_TAG}
 
 # install php-curl
 RUN apt-get update && \
@@ -57,3 +42,18 @@ RUN docker-php-ext-install bcmath ctype exif fileinfo opcache pcntl pdo_mysql xm
 
 # install composer
 COPY --from=composer /usr/bin/composer /usr/bin/composer
+
+# install basic utilities (for composer)
+RUN apt-get update && \
+    apt-get install -y curl git zip
+
+# install mysql client
+RUN apt-get update && \
+    apt-get install -y default-mysql-client
+
+# install Node.js and npm
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get install -y nodejs
+
+# install Yarn package manager
+RUN npm i -g yarn
