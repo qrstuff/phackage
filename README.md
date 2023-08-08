@@ -12,6 +12,7 @@ To use this image, you must have [Docker](https://www.docker.com) installed.
 
 ```dockerfile
 # you can use any of 7.x, 7.x-fpm, 8.x, 8.x-fpm as image tag
+# can suffix tag with -debug for an image with xdebug e.g., php-8.x-debug
 FROM ghcr.io/qrstuff/phackage:7.x
 
 # ...run, cmd & more
@@ -21,6 +22,7 @@ FROM ghcr.io/qrstuff/phackage:7.x
 
 ```shell
 # you can use any of 7.x, 7.x-fpm, 8.x, 8.x-fpm as image tag
+# again, can suffix tag with -debug for an image with xdebug e.g., php-8.x-debug
 $ docker run -it --rm -v .:/app -w /app ghcr.io/qrstuff/phackage:7.x composer install
 
 $ docker run -it -p 8000:8000 --rm -v .:/app -w /app ghcr.io/qrstuff/phackage:7.x php artisan serve
