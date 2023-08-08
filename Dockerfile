@@ -1,7 +1,8 @@
 ARG baseImageTag=latest
-ARG debuggabe=0
 
 FROM php:${baseImageTag}
+
+ARG debuggable=0
 
 # install php-curl
 RUN apt-get update && \
@@ -36,7 +37,7 @@ RUN pecl install redis && \
     docker-php-ext-enable redis
 
 # install php-xdebug extension (optionally)
-RUN if [ "$debuggabe" -eq "1" ]; then pecl install xdebug && docker-php-ext-enable xdebug; fi
+RUN if [ "$debuggable" -eq "1" ]; then pecl install xdebug && docker-php-ext-enable xdebug; fi
 
 # install php-zip extension
 RUN apt-get update && \
