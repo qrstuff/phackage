@@ -2,7 +2,7 @@ ARG baseImageTag=latest
 
 FROM php:${baseImageTag}
 
-ARG debuggable=0
+ARG debuggable="0"
 
 # install php-curl
 RUN apt-get update && \

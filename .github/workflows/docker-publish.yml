@@ -19,22 +19,22 @@ jobs:
           - baseImageTag: 7.4
             imageTag: 7.x
           - baseImageTag: 7.4
-            debuggable: 1
+            debuggable: '1'
             imageTag: 7.x-debug
           - baseImageTag: 7.4-fpm
             imageTag: 7.x-fpm
           - baseImageTag: 7.4-fpm
-            debuggable: 1
+            debuggable: '1'
             imageTag: 7.x-fpm-debug
           - baseImageTag: 8.2
             imageTag: 8.x
           - baseImageTag: 8.2
-            debuggable: 1
+            debuggable: '1'
             imageTag: 8.x-debug
           - baseImageTag: 8.2-fpm
             imageTag: 8.x-fpm
           - baseImageTag: 8.2-fpm
-            debuggable: 1
+            debuggable: '1'
             imageTag: 8.x-fpm-debug
 
     runs-on: ubuntu-latest
