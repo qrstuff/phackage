@@ -17,24 +17,28 @@ jobs:
       matrix:
         include:
           - baseImageTag: 7.4
+            debuggable: 0
             imageTag: 7.x
           - baseImageTag: 7.4
-            debuggable: '1'
+            debuggable: 1
             imageTag: 7.x-debug
           - baseImageTag: 7.4-fpm
+            debuggable: 0
             imageTag: 7.x-fpm
           - baseImageTag: 7.4-fpm
-            debuggable: '1'
+            debuggable: 1
             imageTag: 7.x-fpm-debug
           - baseImageTag: 8.2
+            debuggable: 0
             imageTag: 8.x
           - baseImageTag: 8.2
-            debuggable: '1'
+            debuggable: 1
             imageTag: 8.x-debug
           - baseImageTag: 8.2-fpm
+            debuggable: 0
             imageTag: 8.x-fpm
           - baseImageTag: 8.2-fpm
-            debuggable: '1'
+            debuggable: 1
             imageTag: 8.x-fpm-debug
 
     runs-on: ubuntu-latest
@@ -79,6 +83,7 @@ jobs:
           context: .
           build-args: |
             baseImageTag=${{ matrix.baseImageTag }}
+            debuggable=${{ matrix.debuggable }}
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
