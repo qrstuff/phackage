@@ -2,9 +2,12 @@ ARG baseImageTag=latest
 
 FROM php:${baseImageTag}
 
-ARG debuggable="0"
+# install basic extensions
+RUN apt-get update && \
+    apt-get install -y libxml2-dev && \
+    docker-php-ext-install bcmath ctype exif fileinfo opcache pcntl pdo_mysql xml
 
-# install php-curl
+# install php-curl extension
 RUN apt-get update && \
     apt-get install -y libcurl3-dev && \
     docker-php-ext-install curl
@@ -36,16 +39,15 @@ RUN apt-get update && \
 RUN pecl install redis && \
     docker-php-ext-enable redis
 
+ARG xdebugVersion
+
 # install php-xdebug extension (optionally)
-RUN if [ "$debuggable" -eq "1" ]; then pecl install xdebug && docker-php-ext-enable xdebug; fi
+RUN if [ ! -z "$xdebugVersion" ]; then pecl install xdebug-$xdebugVersion && docker-php-ext-enable xdebug; fi
 
 # install php-zip extension
 RUN apt-get update && \
     apt-get install -y libzip-dev && \
     docker-php-ext-install -j$(nproc) zip
-
-# install other extensions
-RUN docker-php-ext-install bcmath ctype exif fileinfo opcache pcntl pdo_mysql xml
 
 # install composer
 COPY --from=composer /usr/bin/composer /usr/bin/composer
