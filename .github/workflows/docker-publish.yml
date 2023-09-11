@@ -21,6 +21,11 @@ jobs:
           - baseImageTag: 7.4
             imageTag: 7.x-debug
             xdebugVersion: '3.1.6'
+          - baseImageTag: 7.4-apache
+            imageTag: 7.x-apache
+          - baseImageTag: 7.4-apache
+            imageTag: 7.x-apache-debug
+            xdebugVersion: '3.1.6'
           - baseImageTag: 7.4-fpm
             imageTag: 7.x-fpm
           - baseImageTag: 7.4-fpm
@@ -30,6 +35,11 @@ jobs:
             imageTag: 8.x
           - baseImageTag: 8.2
             imageTag: 8.x-debug
+            xdebugVersion: '3.2.2'
+          - baseImageTag: 8.2-apache
+            imageTag: 8.x-apache
+          - baseImageTag: 8.2-apache
+            imageTag: 8.x-apache-debug
             xdebugVersion: '3.2.2'
           - baseImageTag: 8.2-fpm
             imageTag: 8.x-fpm
