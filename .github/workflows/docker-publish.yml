@@ -16,9 +16,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - baseImageTag: 7.4
-            imageTag: 7.4
-          - baseImageTag: 7.4
+          - baseImageTag: '7.4'
+            imageTag: '7.4'
+          - baseImageTag: '7.4'
             imageTag: 7.4-debug
             xdebugVersion: '3.1.6'
           - baseImageTag: 7.4-apache
@@ -31,21 +31,21 @@ jobs:
           - baseImageTag: 7.4-fpm
             imageTag: 7.4-fpm-debug
             xdebugVersion: '3.1.6'
-          - baseImageTag: 8.3
-            imageTag: 8.3
-          - baseImageTag: 8.3
+          - baseImageTag: '8.3'
+            imageTag: '8.3'
+          - baseImageTag: '8.3'
             imageTag: 8.3-debug
-            xdebugVersion: '3.2.2'
+            xdebugVersion: '3.3.2'
           - baseImageTag: 8.3-apache
             imageTag: 8.3-apache
           - baseImageTag: 8.3-apache
             imageTag: 8.3-apache-debug
-            xdebugVersion: '3.2.2'
+            xdebugVersion: '3.3.2'
           - baseImageTag: 8.3-fpm
             imageTag: 8.3-fpm
           - baseImageTag: 8.3-fpm
             imageTag: 8.3-fpm-debug
-            xdebugVersion: '3.2.2'
+            xdebugVersion: '3.3.2'
 
     runs-on: ubuntu-latest
     permissions:
