@@ -32,7 +32,6 @@ RUN apt-get update && \
     apt-get install -y libmagickwand-dev && \
     git clone https://github.com/Imagick/imagick.git --single-branch /tmp/imagick && \
     cd /tmp/imagick && \
-    cd /tmp/imagick && \
     phpize && \
     ./configure && \
     make && \
