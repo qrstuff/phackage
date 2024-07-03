@@ -2,6 +2,10 @@ ARG baseImageTag=latest
 
 FROM php:${baseImageTag}
 
+# install basic utilities
+RUN apt-get update && \
+    apt-get install -y curl git zip
+
 # install basic extensions
 RUN apt-get update && \
     apt-get install -y libxml2-dev && \
@@ -26,7 +30,13 @@ RUN apt-get update && \
 # install php-imagick extension
 RUN apt-get update && \
     apt-get install -y libmagickwand-dev && \
-    pecl install imagick && \
+    git clone https://github.com/Imagick/imagick.git --single-branch /tmp/imagick && \
+    cd /tmp/imagick && \
+    cd /tmp/imagick && \
+    phpize && \
+    ./configure && \
+    make && \
+    make install && \
     docker-php-ext-enable imagick
 
 # install php-intl extension
@@ -51,10 +61,6 @@ RUN apt-get update && \
 
 # install composer
 COPY --from=composer /usr/bin/composer /usr/bin/composer
-
-# install basic utilities (for composer)
-RUN apt-get update && \
-    apt-get install -y curl git zip
 
 # install mysql client
 RUN apt-get update && \
