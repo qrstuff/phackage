@@ -11,9 +11,9 @@ To use this image, you must have [Docker](https://www.docker.com) installed.
 ### Inside your [Dockerfile](https://docs.docker.com/engine/reference/builder/#from)
 
 ```dockerfile
-# you can use any of 7.x, 7.x-apache, 7.x-fpm, 8.x, 8.x-apache or 8.x-fpm as image tag
-# can suffix tag with -debug for an image with xdebug e.g., php-8.x-debug
-FROM ghcr.io/qrstuff/phackage:7.x
+# you can use any of 7.4, 7.4-apache, 7.4-fpm, 8.3, 8.3-apache or 8.3-fpm as image tag
+# can suffix tag with -debug for an image with xdebug e.g., php-8.3-debug
+FROM ghcr.io/qrstuff/phackage:7.4
 
 # ...run, cmd & more
 ```
@@ -21,11 +21,11 @@ FROM ghcr.io/qrstuff/phackage:7.x
 ### Directly with `docker run`
 
 ```shell
-# you can use any of 7.x, 7.x-apache, 7.x-fpm, 8.x, 8.x-apache or 8.x-fpm as image tag
-# again, can suffix tag with -debug for an image with xdebug e.g., php-8.x-debug
-$ docker run -it --rm -v .:/app -w /app ghcr.io/qrstuff/phackage:7.x composer install
+# you can use any of 7.4, 7.4-apache, 7.4-fpm, 8.3, 8.3-apache or 8.3-fpm as image tag
+# again, can suffix tag with -debug for an image with xdebug e.g., php-8.3-debug
+$ docker run -it --rm -v .:/app -w /app ghcr.io/qrstuff/phackage:7.4 composer install
 
-$ docker run -it -p 8000:8000 --rm -v .:/app -w /app ghcr.io/qrstuff/phackage:7.x php artisan serve
+$ docker run -it -p 8000:8000 --rm -v .:/app -w /app ghcr.io/qrstuff/phackage:7.4 php artisan serve
 ```
 
 ## Building
