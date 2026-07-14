@@ -31,21 +31,21 @@ jobs:
           - baseImageTag: 7.4-fpm
             imageTag: 7.4-fpm-debug
             xdebugVersion: '3.1.6'
-          - baseImageTag: '8.3'
-            imageTag: '8.3'
-          - baseImageTag: '8.3'
-            imageTag: 8.3-debug
-            xdebugVersion: '3.3.2'
-          - baseImageTag: 8.3-apache
-            imageTag: 8.3-apache
-          - baseImageTag: 8.3-apache
-            imageTag: 8.3-apache-debug
-            xdebugVersion: '3.3.2'
-          - baseImageTag: 8.3-fpm
-            imageTag: 8.3-fpm
-          - baseImageTag: 8.3-fpm
-            imageTag: 8.3-fpm-debug
-            xdebugVersion: '3.3.2'
+          - baseImageTag: '8.5'
+            imageTag: '8.5'
+          - baseImageTag: '8.5'
+            imageTag: 8.5-debug
+            xdebugVersion: '3.5.3'
+          - baseImageTag: 8.5-apache
+            imageTag: 8.5-apache
+          - baseImageTag: 8.5-apache
+            imageTag: 8.5-apache-debug
+            xdebugVersion: '3.5.3'
+          - baseImageTag: 8.5-fpm
+            imageTag: 8.5-fpm
+          - baseImageTag: 8.5-fpm
+            imageTag: 8.5-fpm-debug
+            xdebugVersion: '3.5.3'
 
     runs-on: ubuntu-latest
     permissions:
