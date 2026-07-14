@@ -20,34 +20,34 @@ jobs:
       matrix:
         include:
           - baseImageTag: '7.4'
-            imageTag: '7.4'
+            imageTag: 7.x
           - baseImageTag: '7.4'
-            imageTag: 7.4-debug
+            imageTag: 7.x-debug
             xdebugVersion: '3.1.6'
           - baseImageTag: 7.4-apache
-            imageTag: 7.4-apache
+            imageTag: 7.x-apache
           - baseImageTag: 7.4-apache
-            imageTag: 7.4-apache-debug
+            imageTag: 7.x-apache-debug
             xdebugVersion: '3.1.6'
           - baseImageTag: 7.4-fpm
-            imageTag: 7.4-fpm
+            imageTag: 7.x-fpm
           - baseImageTag: 7.4-fpm
-            imageTag: 7.4-fpm-debug
+            imageTag: 7.x-fpm-debug
             xdebugVersion: '3.1.6'
           - baseImageTag: '8.5'
-            imageTag: '8.5'
+            imageTag: 8.x
           - baseImageTag: '8.5'
-            imageTag: 8.5-debug
+            imageTag: 8.x-debug
             xdebugVersion: '3.5.3'
           - baseImageTag: 8.5-apache
-            imageTag: 8.5-apache
+            imageTag: 8.x-apache
           - baseImageTag: 8.5-apache
-            imageTag: 8.5-apache-debug
+            imageTag: 8.x-apache-debug
             xdebugVersion: '3.5.3'
           - baseImageTag: 8.5-fpm
-            imageTag: 8.5-fpm
+            imageTag: 8.x-fpm
           - baseImageTag: 8.5-fpm
-            imageTag: 8.5-fpm-debug
+            imageTag: 8.x-fpm-debug
             xdebugVersion: '3.5.3'
 
     runs-on: ubuntu-latest
