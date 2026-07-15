@@ -15,7 +15,7 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  build:
+  build-amd64:
     strategy:
       fail-fast: false
       matrix:
@@ -55,26 +55,15 @@ jobs:
     permissions:
       contents: read
       packages: write
-      id-token: write
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install cosign
-        if: github.event_name != 'pull_request'
-        uses: sigstore/cosign-installer@v3.5.0
-        with:
-          cosign-release: v2.2.4
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      - name: Setup Docker Buildx
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
       - name: Log into registry ${{ env.REGISTRY }}
-        if: github.event_name != 'pull_request'
         uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
@@ -89,24 +78,151 @@ jobs:
           tags: |
             type=raw,value=${{ matrix.imageTag }}
 
-      - name: Build and push Docker image
-        id: build-and-push
+      - name: Build and push AMD64 Docker image
         uses: docker/build-push-action@v6
         with:
           context: .
           build-args: |
             baseImageTag=${{ matrix.baseImageTag }}
             xdebugVersion=${{ matrix.xdebugVersion }}
-          platforms: linux/amd64,linux/arm64
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
+          platforms: linux/amd64
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.imageTag }}-amd64
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max=
+          cache-from: type=gha,scope=${{ matrix.imageTag }}-amd64
+          cache-to: type=gha,mode=max,scope=${{ matrix.imageTag }}-amd64
+
+  build-arm64:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - baseImageTag: '7.4'
+            imageTag: 7.x
+          - baseImageTag: '7.4'
+            imageTag: 7.x-debug
+            xdebugVersion: '3.1.6'
+          - baseImageTag: 7.4-apache
+            imageTag: 7.x-apache
+          - baseImageTag: 7.4-apache
+            imageTag: 7.x-apache-debug
+            xdebugVersion: '3.1.6'
+          - baseImageTag: 7.4-fpm
+            imageTag: 7.x-fpm
+          - baseImageTag: 7.4-fpm
+            imageTag: 7.x-fpm-debug
+            xdebugVersion: '3.1.6'
+          - baseImageTag: '8.5'
+            imageTag: 8.x
+          - baseImageTag: '8.5'
+            imageTag: 8.x-debug
+            xdebugVersion: '3.5.3'
+          - baseImageTag: 8.5-apache
+            imageTag: 8.x-apache
+          - baseImageTag: 8.5-apache
+            imageTag: 8.x-apache-debug
+            xdebugVersion: '3.5.3'
+          - baseImageTag: 8.5-fpm
+            imageTag: 8.x-fpm
+          - baseImageTag: 8.5-fpm
+            imageTag: 8.x-fpm-debug
+            xdebugVersion: '3.5.3'
+
+    runs-on: ubuntu-24.04-arm
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log into registry ${{ env.REGISTRY }}
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=${{ matrix.imageTag }}
+
+      - name: Build and push ARM64 Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          build-args: |
+            baseImageTag=${{ matrix.baseImageTag }}
+            xdebugVersion=${{ matrix.xdebugVersion }}
+          platforms: linux/arm64
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.imageTag }}-arm64
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha,scope=${{ matrix.imageTag }}-arm64
+          cache-to: type=gha,mode=max,scope=${{ matrix.imageTag }}-arm64
+
+  publish-manifest:
+    needs:
+      - build-amd64
+      - build-arm64
+    strategy:
+      fail-fast: false
+      matrix:
+        imageTag:
+          - 7.x
+          - 7.x-debug
+          - 7.x-apache
+          - 7.x-apache-debug
+          - 7.x-fpm
+          - 7.x-fpm-debug
+          - 8.x
+          - 8.x-debug
+          - 8.x-apache
+          - 8.x-apache-debug
+          - 8.x-fpm
+          - 8.x-fpm-debug
+
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      id-token: write
+
+    steps:
+      - name: Install cosign
+        uses: sigstore/cosign-installer@v3.5.0
+        with:
+          cosign-release: v2.2.4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log into registry ${{ env.REGISTRY }}
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create multi-platform manifest
+        env:
+          IMAGE: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          TAG: ${{ matrix.imageTag }}
+        run: |
+          docker buildx imagetools create \
+            --tag "${IMAGE}:${TAG}" \
+            "${IMAGE}:${TAG}-amd64" \
+            "${IMAGE}:${TAG}-arm64"
 
       - name: Sign the published Docker image
-        if: ${{ github.event_name != 'pull_request' }}
         env:
-          TAGS: ${{ steps.meta.outputs.tags }}
-          DIGEST: ${{ steps.build-and-push.outputs.digest }}
-        run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+          IMAGE: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          TAG: ${{ matrix.imageTag }}
+        run: cosign sign --yes "${IMAGE}:${TAG}"
