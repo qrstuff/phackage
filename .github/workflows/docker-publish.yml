@@ -35,19 +35,19 @@ jobs:
           - baseImageTag: 7.4-fpm
             imageTag: 7.x-fpm-debug
             xdebugVersion: '3.1.6'
-          - baseImageTag: '8.3'
+          - baseImageTag: '8.3.36'
             imageTag: 8.x
-          - baseImageTag: '8.3'
+          - baseImageTag: '8.3.36'
             imageTag: 8.x-debug
             xdebugVersion: '3.5.3'
-          - baseImageTag: 8.3-apache
+          - baseImageTag: 8.3.36-apache
             imageTag: 8.x-apache
-          - baseImageTag: 8.3-apache
+          - baseImageTag: 8.3.36-apache
             imageTag: 8.x-apache-debug
             xdebugVersion: '3.5.3'
-          - baseImageTag: 8.3-fpm
+          - baseImageTag: 8.3.36-fpm
             imageTag: 8.x-fpm
-          - baseImageTag: 8.3-fpm
+          - baseImageTag: 8.3.36-fpm
             imageTag: 8.x-fpm-debug
             xdebugVersion: '3.5.3'
 
@@ -57,6 +57,11 @@ jobs:
       packages: write
 
     steps:
+      - name: Warn about unsupported PHP 7.x images
+        if: startsWith(matrix.imageTag, '7.x')
+        run: |
+          echo "::warning::PHP 7.4 is end-of-life and vulnerable to CVE-2026-109618 and CVE-2026-109619. No upstream fix is available. This legacy image is retained for compatibility only; migrate to the patched 8.x images."
+
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -86,6 +91,7 @@ jobs:
             baseImageTag=${{ matrix.baseImageTag }}
             xdebugVersion=${{ matrix.xdebugVersion }}
           platforms: linux/amd64
+          pull: true
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.imageTag }}-amd64
           labels: ${{ steps.meta.outputs.labels }}
@@ -112,19 +118,19 @@ jobs:
           - baseImageTag: 7.4-fpm
             imageTag: 7.x-fpm-debug
             xdebugVersion: '3.1.6'
-          - baseImageTag: '8.3'
+          - baseImageTag: '8.3.36'
             imageTag: 8.x
-          - baseImageTag: '8.3'
+          - baseImageTag: '8.3.36'
             imageTag: 8.x-debug
             xdebugVersion: '3.5.3'
-          - baseImageTag: 8.3-apache
+          - baseImageTag: 8.3.36-apache
             imageTag: 8.x-apache
-          - baseImageTag: 8.3-apache
+          - baseImageTag: 8.3.36-apache
             imageTag: 8.x-apache-debug
             xdebugVersion: '3.5.3'
-          - baseImageTag: 8.3-fpm
+          - baseImageTag: 8.3.36-fpm
             imageTag: 8.x-fpm
-          - baseImageTag: 8.3-fpm
+          - baseImageTag: 8.3.36-fpm
             imageTag: 8.x-fpm-debug
             xdebugVersion: '3.5.3'
 
@@ -134,6 +140,11 @@ jobs:
       packages: write
 
     steps:
+      - name: Warn about unsupported PHP 7.x images
+        if: startsWith(matrix.imageTag, '7.x')
+        run: |
+          echo "::warning::PHP 7.4 is end-of-life and vulnerable to CVE-2026-109618 and CVE-2026-109619. No upstream fix is available. This legacy image is retained for compatibility only; migrate to the patched 8.x images."
+
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -163,6 +174,7 @@ jobs:
             baseImageTag=${{ matrix.baseImageTag }}
             xdebugVersion=${{ matrix.xdebugVersion }}
           platforms: linux/arm64
+          pull: true
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.imageTag }}-arm64
           labels: ${{ steps.meta.outputs.labels }}

@@ -1,4 +1,4 @@
-ARG baseImageTag=latest
+ARG baseImageTag=8.3.36
 
 FROM php:${baseImageTag}
 
