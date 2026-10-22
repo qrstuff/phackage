@@ -1,8 +1,16 @@
 # phackage
 
-Batteries included [Docker](https://www.docker.com/) image for latest [PHP](https://www.php.net/) 7 & 8 versions + all extensions installed and enabled, [Composer](https://getcomposer.org/), [Node.js](https://nodejs.org/en), [Yarn](https://yarnpkg.com/).
+Batteries included [Docker](https://www.docker.com/) image for [PHP](https://www.php.net/) 8.3 and legacy PHP 7.4 + all extensions installed and enabled, [Composer](https://getcomposer.org/), [Node.js](https://nodejs.org/en), [Yarn](https://yarnpkg.com/).
 
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/qrstuff/phackage/docker-publish.yml?branch=main)
+
+## Security
+
+The `8.x`, `8.x-apache`, and `8.x-fpm` images (including their `-debug` variants) are built from PHP **8.3.36**, which fixes **CVE-2026-109618** and **CVE-2026-109619**. See the [Google Cloud advisory](https://cloud.google.com/blog/products/identity-security/responding-to-core-php-vulnerabilities-cve-2026-109618-cve-2026-109619).
+
+**Warning:** All `7.x` variants remain on end-of-life PHP 7.4 and are vulnerable to these CVEs. No upstream patch is available. They are retained for compatibility only; migrate to the patched `8.x` images.
+
+The updated `8.x` images must first be built and published by the workflow. Then pull the updated images, rebuild downstream application images with `--pull`, and redeploy running containers. Existing images and containers are not patched automatically. PHP patch versions are pinned explicitly and must be updated for future security releases.
 
 ## Usage
 
@@ -11,9 +19,9 @@ To use this image, you must have [Docker](https://www.docker.com) installed.
 ### Inside your [Dockerfile](https://docs.docker.com/engine/reference/builder/#from)
 
 ```dockerfile
-# you can use any of 7.4, 7.4-apache, 7.4-fpm, 8.5, 8.5-apache or 8.5-fpm as image tag
-# can suffix tag with -debug for an image with xdebug e.g., php-8.5-debug
-FROM ghcr.io/qrstuff/phackage:7.4
+# use 8.x, 8.x-apache or 8.x-fpm as the image tag
+# can suffix tag with -debug for an image with xdebug e.g., 8.x-debug
+FROM ghcr.io/qrstuff/phackage:8.x
 
 # ...run, cmd & more
 ```
@@ -21,11 +29,11 @@ FROM ghcr.io/qrstuff/phackage:7.4
 ### Directly with `docker run`
 
 ```shell
-# you can use any of 7.4, 7.4-apache, 7.4-fpm, 8.5, 8.5-apache or 8.5-fpm as image tag
-# again, can suffix tag with -debug for an image with xdebug e.g., php-8.5-debug
-$ docker run -it --rm -v .:/app -w /app ghcr.io/qrstuff/phackage:7.4 composer install
+# use 8.x, 8.x-apache or 8.x-fpm as the image tag
+# again, can suffix tag with -debug for an image with xdebug e.g., 8.x-debug
+$ docker run -it --rm -v .:/app -w /app ghcr.io/qrstuff/phackage:8.x composer install
 
-$ docker run -it -p 8000:8000 --rm -v .:/app -w /app ghcr.io/qrstuff/phackage:7.4 php artisan serve
+$ docker run -it -p 8000:8000 --rm -v .:/app -w /app ghcr.io/qrstuff/phackage:8.x php artisan serve
 ```
 
 ## Building
@@ -34,11 +42,11 @@ Building or modifying the container yourself from source is also quite easy.
 Just clone the repository and run below command:
 
 ```shell
-# using latest php
-$ docker build -t phackage-local .
+# using the pinned, patched PHP 8.3.36 base image
+$ docker build --pull -t phackage-local .
 
 # using custom php image version/variant
-$ docker build --build-arg="baseImageTag=7.4-cli" -t phackage-local .
+$ docker build --pull --build-arg="baseImageTag=8.3.36-fpm" -t phackage-local .
 ```
 
 ## License
