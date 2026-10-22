@@ -1,6 +1,6 @@
 # phackage
 
-Batteries included [Docker](https://www.docker.com/) image for [PHP](https://www.php.net/) 8.3 and legacy PHP 7.4 + all extensions installed and enabled, [Composer](https://getcomposer.org/), [Node.js](https://nodejs.org/en), [Yarn](https://yarnpkg.com/).
+Batteries included [Docker](https://www.docker.com/) image for [PHP](https://www.php.net/) 8.3 + all extensions installed and enabled, [Composer](https://getcomposer.org/), [Node.js](https://nodejs.org/en), [Yarn](https://yarnpkg.com/).
 
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/qrstuff/phackage/docker-publish.yml?branch=main)
 
@@ -8,9 +8,13 @@ Batteries included [Docker](https://www.docker.com/) image for [PHP](https://www
 
 The `8.x`, `8.x-apache`, and `8.x-fpm` images (including their `-debug` variants) are built from PHP **8.3.36**, which fixes **CVE-2026-109618** and **CVE-2026-109619**. See the [Google Cloud advisory](https://cloud.google.com/blog/products/identity-security/responding-to-core-php-vulnerabilities-cve-2026-109618-cve-2026-109619).
 
-**Warning:** All `7.x` variants remain on end-of-life PHP 7.4 and are vulnerable to these CVEs. No upstream patch is available. They are retained for compatibility only; migrate to the patched `8.x` images.
-
 The updated `8.x` images must first be built and published by the workflow. Then pull the updated images, rebuild downstream application images with `--pull`, and redeploy running containers. Existing images and containers are not patched automatically. PHP patch versions are pinned explicitly and must be updated for future security releases.
+
+### PHP 7.x images deprecated
+
+PHP 7.4 is end-of-life and no longer receives security updates. Consequently, phackage has deprecated all `7.x` images, including Apache, FPM, and debug variants, and no longer builds or publishes them.
+
+Existing published `7.x` images remain available unchanged for backward compatibility, but receive no further rebuilds, maintenance, or security updates. They remain vulnerable to the CVEs above. Migrate to the maintained `8.x` images.
 
 ## Usage
 
